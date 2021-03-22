@@ -7,6 +7,7 @@ let speechApp = new SpeechApp({
     textAreaSelector: '#text_area',
     wordSelector:'#pWord',
     gameResult: '#gameResult',
+    selectMenu: '#percentage',
 });
 
 speechApp.init();

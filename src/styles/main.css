@@ -42,5 +42,12 @@ body {
     align-content: center;
     text-decoration: underline;
   }
+  .select-menu{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
 
   

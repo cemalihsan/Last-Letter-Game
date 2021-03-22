@@ -1,7 +1,7 @@
-export const randomNameGenerator = (names, last_name) => {
+export const randomNameGenerator = (names, last_name, difficulty) => {
     let l = last_name.length;
-    console.log(l,last_name)
-    let compComplexity = names.length - (names.length*30)/100
+    let compComplexity = names.length - (names.length*difficulty)/100
+    console.log(l,last_name,difficulty, compComplexity)
     //let generated = ~~(Math.random()*names.length);
     //console.log(generated)
     let shuffledNames = shuffleArray(names,compComplexity);

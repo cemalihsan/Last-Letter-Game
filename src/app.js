@@ -7,6 +7,7 @@ class SpeechApp {
         textAreaSelector,
         wordSelector,
         gameResult,
+        selectMenu,
       } = options;
         const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
         this.recognition = new SpeechRecognition();
@@ -18,12 +19,15 @@ class SpeechApp {
         this.textlog = document.querySelector(textAreaSelector);
         this.wordTextSelector = document.querySelector(wordSelector);
         this.gameResultSelector = document.querySelector(gameResult);
+        this.difficultySelector = document.querySelector(selectMenu);
         this.timer = document.getElementById("timer");
 
         this.arrayOfAnswers = [];
         this.currentComputerName = null;
         this.word = '';
         this.noteContent = '';
+        this.compDifficulty = 30;
+        this.diffLevel = 0;
 
         this.names = require('./names.json')
     }
@@ -67,15 +71,15 @@ class SpeechApp {
     }
 
     
-    getComputerName(name, value){
-      let output = randomNameGenerator(name, value);
+    getComputerName(name, value,difficulty){
+      let output = randomNameGenerator(name, value, difficulty);
       return output
     }
 
     checkNamesOfInput(array, currentInput, computerVal, allNames){
       if(array[array.length-1].slice(-1) === currentInput.charAt(0)){
         array.push(currentInput)
-        computerVal = this.getComputerName(allNames, currentInput);
+        computerVal = this.getComputerName(allNames, currentInput,this.diffLevel);
         array.push(computerVal);
         this.voiceOfText(computerVal);
         this.generateUsedNames(array);
@@ -107,6 +111,13 @@ class SpeechApp {
       htmlText.innerHTML = `<h3 style="font-size:30px;">You Lost!!!</h3>`
     }
 
+    difficultySelection(){
+      this.difficultySelector.addEventListener('change', (event) => {
+        let diffValue = parseInt(event.target.value)
+        this.diffLevel = diffValue
+      });
+    }
+
     generateUsedNames(items){
       this.wordTextSelector.innerHTML =
         '<ul class="name-list">' +
@@ -131,11 +142,14 @@ class SpeechApp {
     listenBtn(){
       this.voiceButton.addEventListener("click", () => {
         this.listeningVoice();
+        this.difficultySelector.disabled = true;
       });
     }
   
     init() {
+        this.difficultySelection();
         this.listenBtn();
+        
     }
   }
   
