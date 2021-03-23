@@ -21,12 +21,12 @@ class SpeechApp {
         this.gameResultSelector = document.querySelector(gameResult);
         this.difficultySelector = document.querySelector(selectMenu);
         this.timer = document.getElementById("timer");
+        this.restart = document.getElementById("restart");
 
         this.arrayOfAnswers = [];
         this.currentComputerName = null;
         this.word = '';
         this.noteContent = '';
-        this.compDifficulty = 30;
         this.diffLevel = 0;
 
         this.names = require('./names.json')
@@ -53,7 +53,7 @@ class SpeechApp {
 
         if(this.arrayOfAnswers.includes(this.noteContent)){
           this.arrayOfAnswers.push(this.noteContent)
-          this.lostGame("Lost!!! Used same words." + this.arrayOfAnswers.length + " words used.", this.voiceButton, this.gameResultSelector)
+          this.lostGame("Lost!!! Used same words." + this.arrayOfAnswers.length + " words used.", this.voiceButton, this.gameResultSelector,"You Lost!!!")
           
         }else{
             let correctOrFalse = this.checkNamesOfInput(this.arrayOfAnswers, this.noteContent, this.currentComputerName, this.names)
@@ -88,11 +88,14 @@ class SpeechApp {
       }else if(array[array.length-1].slice(-1) !== currentInput.charAt(0)){
         array.push(currentInput)
         this.generateUsedNames(array)
-        this.lostGame("Lost!!! " + array.length + " words used.", this.voiceButton, this.gameResultSelector)
+        this.lostGame("Lost!!! " + array.length + " words used.", this.voiceButton, this.gameResultSelector,"You Lost!!!")
         return 'wrong'
       }
       else if(array.length == 1){
-        this.lostGame("Lost!!!Did not use the microphone", this.voiceButton, this.gameResultSelector)
+        this.lostGame("Lost!!!Did not use the microphone", this.voiceButton, this.gameResultSelector,"You Lost!!!")
+      }
+      else if(computerVal === '' || computerVal === null){
+        this.lostGame("Won!!!", this.voiceButton, this.gameResultSelector,"You Win!!!")
       }
     }
 
@@ -105,10 +108,10 @@ class SpeechApp {
       }
     }
     
-    lostGame(text, button, htmlText){
+    lostGame(text, button, htmlText, textVal){
       window.alert(text);
       button.disabled = true;
-      htmlText.innerHTML = `<h3 style="font-size:30px;">You Lost!!!</h3>`
+      htmlText.innerHTML = `<h3 style="font-size:30px;">${textVal}</h3>`
     }
 
     difficultySelection(){
@@ -139,6 +142,12 @@ class SpeechApp {
       this.synthesis.speak(utter);
     };
 
+    restartGame(){
+      this.restart.addEventListener('click', ()=>{
+        location.reload();
+      })
+    }
+
     listenBtn(){
       this.voiceButton.addEventListener("click", () => {
         this.listeningVoice();
@@ -149,6 +158,7 @@ class SpeechApp {
     init() {
         this.difficultySelection();
         this.listenBtn();
+        this.restartGame();
         
     }
   }
